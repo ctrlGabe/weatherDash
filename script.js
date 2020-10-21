@@ -38,6 +38,22 @@ function weatherCall(city) {
         $("#temp").text("Temperature: " + temperature + " °F");
         $("#wind").text("Wind: " + response.wind.speed + " MPH");
         $("#humid").text("Humidity: " + response.main.humidity + " %")
-    });
-}
 
+        $.ajax({
+            url: uvURL,
+            method: "GET",
+        }).then(function (response) {
+            uvValue = response.value;
+            $("#uv").text("UV index: " + response.value);
+
+            if (response.value < 3) {
+                $("#uv").addClass("bg-success");
+              } else if (response.value > 2 || response.value < 8) {
+                $("#uv").addClass("bg-warning");
+              } else {
+                $("#uv").addClass("bg-danger");
+              }
+        });
+    });
+
+}
