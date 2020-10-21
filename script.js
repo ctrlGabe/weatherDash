@@ -8,13 +8,14 @@ var weatherIcon;
 var latitude;
 var longitude;
 var iconURL;
+var uvURL;
 
 
 function weatherCall(city) {
     var apikey = "&appid=e329da33b4b18efa883c3646124500ec";
 
     var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + apikey;
-    
+
     $.ajax({
         url: queryURL,
         method: "GET",
@@ -31,5 +32,12 @@ function weatherCall(city) {
         "&lon=" +
         longitude +
         apikey;
+
+        $("#cityName").text(response.name)
+        $("#cityName").append("<span><img src=" + iconURL + "></span>")
+        $("#temp").text("Temperature: " + temperature + " °F");
+        $("#wind").text("Wind: " + response.wind.speed + " MPH");
+        $("#humid").text("Humidity: " + response.main.humidity + " %")
     });
 }
+
