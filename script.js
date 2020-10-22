@@ -33,7 +33,7 @@ function weatherCall(city) {
         longitude +
         apikey;
 
-        $("#cityName").text(response.name)
+        $("#cityName").text(response.name + " (" + (moment().format("l") + ")"))
         $("#cityName").append("<span><img src=" + iconURL + "></span>")
         $("#temp").text("Temperature: " + temperature + " °F");
         $("#wind").text("Wind: " + response.wind.speed + " MPH");
@@ -66,6 +66,26 @@ function weatherCall(city) {
         method: "GET",
     }).then(function (response) {
         console.log("forecast response", response);
+
+        for (let i = 0; i < response.list.length; i++) {
+            if (response.list[i].dt_txt.indexOf("03:00:00") > 0) {
+              temperature = Math.round((response.list[i].main.temp - 273.15) * 1.8 + 32);
+              forecastIcon = response.list[i].weather[0].icon;
+              forecastURL = "https://openweathermap.org/img/wn/" + forecastIcon + "@2x.png";
+              var date = moment(response.list[i].dt_txt).format("l");
+              var weatherCards = `<div">
+                  <div class="card-body">
+                    <h4 class="forecast-date card-title">${date}</h4>
+                    <span class="forecast-icon"><img src=${forecastURL}></span>
+                    <p class="forecast-temp">Temp: ${temperature} °F</p>
+                    <p class="forecast-humid">Humidity: ${response.list[i].main.humidity} %</p>
+                  </div>
+                </div>`;
+
+              $("#forecast").append(weatherCards);
+              console.log(weatherCards)
+            }
+          }
     });
-    
+
 }
