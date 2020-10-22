@@ -56,4 +56,16 @@ function weatherCall(city) {
         });
     });
 
+    var forecastURL =
+    "https://api.openweathermap.org/data/2.5/forecast?q=" +
+    city +
+    apikey;
+
+    $.ajax({
+        url: forecastURL,
+        method: "GET",
+    }).then(function (response) {
+        console.log("forecast response", response);
+    });
+    
 }
